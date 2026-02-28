@@ -57,6 +57,7 @@ export const Navbar = ({ currentPage, setPage }: { currentPage: Page, setPage: (
       <div className="absolute bottom-0 left-0 h-[2px] bg-primary transition-all duration-100 ease-out" style={{ width: `${scrollProgress}%` }} />
       
       <div className="max-w-7xl px-6 flex justify-between items-center">
+        
         <div className="flex items-center gap-4 cursor-pointer group" onClick={() => setPage('home')}>
           <div className="relative">
             <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center font-display text-dark text-3xl">V</div>
