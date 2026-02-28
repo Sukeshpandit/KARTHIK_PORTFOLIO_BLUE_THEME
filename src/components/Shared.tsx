@@ -75,7 +75,7 @@ export const Navbar = ({ currentPage, setPage }: { currentPage: Page, setPage: (
 
           {/* Brand */}
           <motion.button
-            className="flex items-center gap-3 group flex-shrink-0 mr-auto"
+            className="relative flex items-center gap-3 group flex-shrink-0 mr-auto"
             onClick={() => handleNav('home')}
             whileHover={{ scale: 1.02 }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
@@ -86,10 +86,10 @@ export const Navbar = ({ currentPage, setPage }: { currentPage: Page, setPage: (
               </div>
               <div className="absolute -inset-1 bg-primary/30 blur-lg rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
-            <div className="leading-none">
-              <p className="hidden lg:block text-[13px] font-bold tracking-tight text-white">KARTHIK SHEKAR ACHARYA</p>
-              <p className="hidden sm:block lg:hidden text-[12px] font-bold tracking-tight text-white">K. SHEKAR ACHARYA</p>
-              <p className="text-[9px] font-inter text-primary tracking-[0.35em] font-black uppercase mt-0.5">Elite Athlete • Actor</p>
+            <div className="leading-none text-left">
+              <p className="text-[9px] sm:text-[10px] font-black tracking-[0.35em] text-white/40 uppercase">KARTHIK SHEKAR</p>
+              <p className="text-xl sm:text-2xl font-display tracking-tight text-white leading-tight">ACHARYA</p>
+              <p className="hidden sm:block text-[8px] font-inter text-white/35 tracking-[0.28em] uppercase mt-0.5">BODYBUILDER &nbsp;|&nbsp; ACTOR &nbsp;|&nbsp; WILDLIFE RESCUER</p>
             </div>
           </motion.button>
 
@@ -230,46 +230,91 @@ export const Navbar = ({ currentPage, setPage }: { currentPage: Page, setPage: (
 };
 
 export const Footer = ({ setPage }: { setPage: (p: Page) => void }) => {
+  const navLinks: { label: string; value: Page }[] = [
+    { label: 'Home', value: 'home' },
+    { label: 'Fitness & Training', value: 'fitness' },
+    { label: 'Acting Portfolio', value: 'acting' },
+    { label: 'Wildlife Rescue', value: 'wildlife' },
+    { label: 'Gallery', value: 'gallery' },
+    { label: 'Contact', value: 'contact' },
+  ];
+
   return (
-    <footer className="bg-surface pt-20 pb-10 border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
-        <div className="col-span-1 md:col-span-2">
-          <h2 className="text-3xl mb-4">KARTHIK SHEKAR ACHARYA</h2>
-          <p className="text-white/50 font-inter max-w-md mb-8 leading-relaxed">
-            National Level Bodybuilder, Professional Actor, and Wildlife Rescuer. 
-            Dedicated to pushing human limits and protecting nature's most misunderstood creatures.
-          </p>
-          <div className="flex gap-4">
-            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary hover:text-dark transition-all"><Instagram size={20} /></a>
-            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary hover:text-dark transition-all"><Youtube size={20} /></a>
-            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary hover:text-dark transition-all"><Facebook size={20} /></a>
+    <footer className="bg-surface border-t border-white/5">
+      <div className="max-w-7xl mx-auto px-6 py-14">
+
+        {/* Main row */}
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 justify-between">
+
+          {/* Left */}
+          <div className="flex-1 min-w-0">
+            {/* Name */}
+            <div className="mb-7">
+              <p className="text-[11px] font-black tracking-[0.45em] text-white/40 uppercase mb-0.5">KARTHIK SHEKAR</p>
+              <h2 className="text-6xl sm:text-7xl font-display tracking-tight leading-none text-white">ACHARYA</h2>
+              <p className="text-[11px] text-white/35 tracking-[0.28em] uppercase mt-3 font-inter">
+                BODYBUILDER &nbsp;|&nbsp; ACTOR &nbsp;|&nbsp; WILDLIFE RESCUER
+              </p>
+            </div>
+
+            {/* Horizontal nav */}
+            <div className="flex flex-wrap gap-x-5 gap-y-2 mb-7">
+              {navLinks.map((link) => (
+                <button
+                  key={link.value}
+                  onClick={() => setPage(link.value)}
+                  className="text-[13px] font-inter text-white/50 hover:text-white transition-colors"
+                >
+                  {link.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Email */}
+            <div className="flex items-center gap-2 text-white/45 font-inter text-sm mb-7">
+              <Mail size={15} className="text-white/30 flex-shrink-0" />
+              contact@karthikacharya.pro
+            </div>
+
+            {/* Social */}
+            <div>
+              <p className="text-[11px] text-white/30 font-inter mb-3 tracking-wide">Do follow me on social media</p>
+              <div className="flex gap-2.5">
+                <a href="#" className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/45 hover:text-white hover:border-white/30 transition-all"><Instagram size={16} /></a>
+                <a href="#" className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/45 hover:text-white hover:border-white/30 transition-all"><Facebook size={16} /></a>
+                <a href="#" className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/45 hover:text-white hover:border-white/30 transition-all"><Youtube size={16} /></a>
+              </div>
+            </div>
+          </div>
+
+          {/* Right — image + subscribe */}
+          <div className="flex flex-col items-start lg:items-end gap-4 lg:w-72 flex-shrink-0">
+            <div className="w-full lg:w-72 h-44 rounded-2xl overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop"
+                alt="Gym"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <a
+              href="https://www.youtube.com/@Ksacharya6"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-6 py-3 bg-red-600 text-white font-black text-[11px] tracking-[0.25em] uppercase rounded-xl hover:bg-red-500 hover:scale-105 transition-all active:scale-95 shadow-lg"
+            >
+              <Youtube size={16} fill="currentColor" />
+              Subscribe
+            </a>
           </div>
         </div>
 
-        <div>
-          <h3 className="text-primary text-sm font-bold tracking-widest uppercase mb-6">Quick Links</h3>
-          <ul className="flex flex-col gap-3 font-inter text-sm text-white/60">
-            <li><button onClick={() => setPage('home')} className="hover:text-white transition-colors">Home</button></li>
-            <li><button onClick={() => setPage('fitness')} className="hover:text-white transition-colors">Fitness & Training</button></li>
-            <li><button onClick={() => setPage('acting')} className="hover:text-white transition-colors">Acting Portfolio</button></li>
-            <li><button onClick={() => setPage('wildlife')} className="hover:text-white transition-colors">Wildlife Rescue</button></li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="text-primary text-sm font-bold tracking-widest uppercase mb-6">Contact</h3>
-          <ul className="flex flex-col gap-4 font-inter text-sm text-white/60">
-            <li className="flex items-center gap-3"><Mail size={16} className="text-primary" /> contact@vikramsingh.pro</li>
-            <li className="flex items-center gap-3"><Phone size={16} className="text-primary" /> +91 98765 43210</li>
-            <li className="flex items-center gap-3"><MapPin size={16} className="text-primary" /> Elite Pro Gym, Mumbai, MH</li>
-          </ul>
-        </div>
-      </div>
-      <div className="max-w-7xl mx-auto px-6 mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/30 font-inter uppercase tracking-widest">
-        <p>© 2026 KARTHIK SHEKAR ACHARYA. ALL RIGHTS RESERVED.</p>
-        <div className="flex gap-8">
-          <a href="#" className="hover:text-white">Privacy Policy</a>
-          <a href="#" className="hover:text-white">Terms of Service</a>
+        {/* Bottom bar */}
+        <div className="mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-3 text-[11px] text-white/25 font-inter uppercase tracking-widest">
+          <p>© 2026 KARTHIK SHEKAR ACHARYA. ALL RIGHTS RESERVED.</p>
+          <div className="flex gap-8">
+            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+          </div>
         </div>
       </div>
     </footer>
