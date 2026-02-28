@@ -1,9 +1,10 @@
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
+import { useState, useEffect } from 'react';
 import { 
   ShieldAlert, 
   Play, 
-  ChevronRight, 
-  MapPin, 
+  ChevronRight,
+  ChevronLeft,
   Phone, 
   Info,
   Heart,
@@ -11,7 +12,40 @@ import {
 } from 'lucide-react';
 import { SectionHeading, Page, Reveal } from './Shared';
 
+const wildlifeSlides = [
+  { src: '/assets/wildlife/rescue-1.jpg', caption: 'Live Cobra Rescue · Bengaluru' },
+  { src: '/assets/wildlife/rescue-2.jpg', caption: 'Python Relocation · Mysuru' },
+  { src: '/assets/wildlife/rescue-3.jpg', caption: 'Viper Handling · Mumbai' },
+  { src: '/assets/wildlife/rescue-4.jpg', caption: 'Field Operation · Goa' },
+];
+
 export const Wildlife = ({ setPage }: { setPage: (p: Page) => void }) => {
+  const [slide, setSlide] = useState(0);
+  const [direction, setDirection] = useState(1);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setDirection(1);
+      setSlide((prev) => (prev + 1) % wildlifeSlides.length);
+    }, 3500);
+    return () => clearInterval(timer);
+  }, []);
+
+  const goTo = (index: number) => {
+    setDirection(index > slide ? 1 : -1);
+    setSlide(index);
+  };
+
+  const prev = () => {
+    setDirection(-1);
+    setSlide((prev) => (prev - 1 + wildlifeSlides.length) % wildlifeSlides.length);
+  };
+
+  const next = () => {
+    setDirection(1);
+    setSlide((prev) => (prev + 1) % wildlifeSlides.length);
+  };
+
   const species = [
     { name: 'Spectacled Cobra', type: 'Venomous', risk: 'High', img: 'https://picsum.photos/seed/cobra/400/300' },
     { name: 'Russell\'s Viper', type: 'Venomous', risk: 'High', img: 'https://picsum.photos/seed/viper/400/300' },
@@ -23,7 +57,7 @@ export const Wildlife = ({ setPage }: { setPage: (p: Page) => void }) => {
     <div className="pt-32 pb-20">
       {/* Hero */}
       <section className="px-6 mb-48">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-stretch">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -33,22 +67,22 @@ export const Wildlife = ({ setPage }: { setPage: (p: Page) => void }) => {
               <SectionHeading title="Wildlife Rescue" subtitle="Snake Specialist" align="left" />
             </Reveal>
             <Reveal width="100%" delay={0.3}>
-              <p className="text-2xl text-white/50 font-inter mb-12 leading-relaxed">
+              <p className="text-1xl text-white/50 font-inter mb-12 leading-relaxed">
                 Wildlife conservation is more than just a passion; it's a responsibility. 
                 In a rapidly urbanizing world, I work to bridge the gap between humans and nature, 
                 ensuring that every rescue is safe for both parties.
               </p>
             </Reveal>
-            <div className="glass-morphism border-primary/20 p-10 rounded-[2.5rem] mb-16 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors" />
-              <div className="flex items-center gap-6 mb-6 text-primary">
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+            <div className="bg-red-900/40 backdrop-blur-xl border border-red-500/40 p-10 rounded-[2.5rem] mb-16 relative overflow-hidden group shadow-[0_0_40px_rgba(220,38,38,0.15)]">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-red-600/20 rounded-full blur-3xl group-hover:bg-red-500/30 transition-colors" />
+              <div className="flex items-center gap-6 mb-6 text-red-400">
+                <div className="w-14 h-14 rounded-2xl bg-red-500/15 flex items-center justify-center">
                   <AlertTriangle size={28} />
                 </div>
-                <h4 className="font-black uppercase tracking-[0.2em] text-sm">Emergency Hotline</h4>
+                <h4 className="font-black uppercase tracking-[0.2em] text-sm text-red-300">Emergency Hotline</h4>
               </div>
-              <p className="text-white/40 text-sm mb-10 leading-relaxed font-inter">Spotted a snake? Do not panic. Keep a safe distance and call immediately. Available 24/7 for emergency rescues.</p>
-              <a href="tel:+919876543210" className="inline-flex items-center gap-4 bg-primary text-white px-10 py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-xs hover:bg-white hover:text-dark hover:scale-105 transition-all active:scale-95 shadow-xl">
+              <p className="text-red-200/50 text-sm mb-10 leading-relaxed font-inter">Spotted a snake? Do not panic. Keep a safe distance and call immediately. Available 24/7 for emergency rescues.</p>
+              <a href="tel:+919876543210" className="inline-flex items-center gap-4 bg-red-600 text-white px-10 py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-xs hover:bg-red-400 hover:scale-105 transition-all active:scale-95 shadow-xl shadow-red-900/40">
                 <Phone size={20} /> +91 98765 43210
               </a>
             </div>
@@ -57,19 +91,67 @@ export const Wildlife = ({ setPage }: { setPage: (p: Page) => void }) => {
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="relative"
+            className="relative h-full"
           >
-            <div className="aspect-square rounded-[3rem] overflow-hidden border border-white/5 shadow-2xl skew-10">
-              <img 
-                src="https://images.unsplash.com/photo-1531386151447-fd76ad50012f?q=80&w=1974&auto=format&fit=crop" 
-                alt="Rescue Action"
-                className="w-full h-full object-cover -skew-10 scale-125"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-            <div className="absolute -top-12 -right-12 glass-morphism p-10 rounded-3xl hidden md:block shadow-2xl">
-              <p className="text-7xl font-display text-primary mb-2">850+</p>
-              <p className="text-[11px] font-black uppercase tracking-[0.4em] text-white/30">Successful Rescues</p>
+            {/* Slideshow */}
+            <div className="relative h-full min-h-[420px] rounded-3xl overflow-hidden">
+              {/* Slides */}
+              <AnimatePresence initial={false} custom={direction}>
+                <motion.img
+                  key={slide}
+                  src={wildlifeSlides[slide].src}
+                  alt={wildlifeSlides[slide].caption}
+                  custom={direction}
+                  variants={{
+                    enter: (d: number) => ({ x: d > 0 ? '100%' : '-100%', opacity: 0 }),
+                    center: { x: 0, opacity: 1 },
+                    exit: (d: number) => ({ x: d > 0 ? '-100%' : '100%', opacity: 0 }),
+                  }}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.55, ease: 'easeInOut' }}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </AnimatePresence>
+
+              {/* Edge blending — bleeds image into page bg */}
+              <div className="absolute inset-0 z-10 pointer-events-none">
+                <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-dark/70 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-dark via-dark/60 to-transparent" />
+                <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-dark/60 to-transparent" />
+                <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-dark/60 to-transparent" />
+              </div>
+
+              {/* Caption */}
+              <div className="absolute bottom-5 left-6 z-20">
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">{wildlifeSlides[slide].caption}</p>
+              </div>
+
+              {/* Prev / Next */}
+              <button
+                onClick={prev}
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-dark/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-primary hover:text-dark transition-all"
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <button
+                onClick={next}
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-dark/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-primary hover:text-dark transition-all"
+              >
+                <ChevronRight size={18} />
+              </button>
+
+              {/* Dots */}
+              <div className="absolute bottom-5 right-6 z-20 flex gap-2 items-center">
+                {wildlifeSlides.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => goTo(i)}
+                    className={`rounded-full transition-all duration-300 ${i === slide ? 'w-5 h-2 bg-primary' : 'w-2 h-2 bg-white/40 hover:bg-white/70'}`}
+                  />
+                ))}
+              </div>
             </div>
           </motion.div>
         </div>
