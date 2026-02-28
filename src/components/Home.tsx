@@ -117,7 +117,7 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
       <Marquee items={['National Bodybuilder', 'Action Actor', 'Elite Trainer', 'Wildlife Rescuer', 'National Champion']} />
 
       {/* Professional Journey Timeline */}
-      <section className="py-48 bg-dark px-6 relative">
+      {/* <section className="py-48 bg-dark px-6 relative">
         <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-surface to-transparent opacity-50" />
         <div className="max-w-7xl mx-auto relative z-10">
           <SectionHeading title="The Legacy" subtitle="Professional Journey" />
@@ -163,7 +163,7 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Stats Section */}
       <section className="py-32 bg-mesh px-6">
@@ -176,9 +176,9 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
       </section>
 
       {/* Social Dashboard */}
-      <section className="py-48 bg-dark px-6 overflow-hidden">
+      <section className="py-32 bg-dark px-6 overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row justify-between items-end mb-24 gap-12">
+          <div className="flex flex-col lg:flex-row justify-between items-end gap-12">
             <SectionHeading title="Real-Time Impact" subtitle="Social Presence" align="left" />
             <div className="flex flex-wrap gap-6 mb-24">
               <div className="glass-morphism px-8 py-6 flex items-center gap-6 rounded-3xl">

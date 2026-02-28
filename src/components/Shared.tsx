@@ -36,12 +36,21 @@ export const Navbar = ({ currentPage, setPage }: { currentPage: Page, setPage: (
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (window.scrollY / totalHeight) * 100;
-      setScrollProgress(progress);
+      setScrollProgress(totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = isMobileMenuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isMobileMenuOpen]);
+
+  const handleNav = (page: Page) => {
+    setPage(page);
+    setIsMobileMenuOpen(false);
+  };
 
   const navItems: { label: string; value: Page }[] = [
     { label: 'Home', value: 'home' },
@@ -49,97 +58,174 @@ export const Navbar = ({ currentPage, setPage }: { currentPage: Page, setPage: (
     { label: 'Acting', value: 'acting' },
     { label: 'Wildlife', value: 'wildlife' },
     { label: 'Gallery', value: 'gallery' },
-    { label: 'Contact', value: 'contact' },
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-dark/80 backdrop-blur-2xl py-3 border-b border-white/5 shadow-2xl' : 'bg-transparent py-8'}`}>
-      <div className="absolute bottom-0 left-0 h-[2px] bg-primary transition-all duration-100 ease-out" style={{ width: `${scrollProgress}%` }} />
-      
-      <div className="max-w-7xl px-6 flex justify-between items-center">
-        
-        <div className="flex items-center gap-4 cursor-pointer group" onClick={() => setPage('home')}>
-          <div className="relative">
-            <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center font-display text-dark text-3xl">V</div>
-            <div className="absolute -inset-1 bg-primary/20 blur-lg rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-          </div>
-          <div>
-            <h1 className="text-2xl leading-none tracking-tighter">KARTHIK SHEKAR ACHARYA</h1>
-            <p className="text-[10px] font-inter text-primary tracking-[0.4em] font-black uppercase">Elite Athlete • Actor</p>
-          </div>
-        </div>
+    <>
+      <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+        isScrolled ? 'bg-dark/90 backdrop-blur-2xl py-2.5 border-b border-white/5 shadow-2xl' : 'bg-transparent py-5'
+      }`}>
+        {/* Scroll progress bar */}
+        <div
+          className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-primary via-primary to-primary/40 transition-all duration-100 ease-out"
+          style={{ width: `${scrollProgress}%` }}
+        />
 
-        {/* Desktop Nav */}
-        <div className="hidden lg:flex items-center gap-10">
-          {navItems.map((item, i) => (
-            <motion.button
-              key={item.value}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              onClick={() => setPage(item.value)}
-              className={`relative text-[11px] font-bold tracking-[0.2em] uppercase transition-all hover:text-primary group ${currentPage === item.value ? 'text-primary' : 'text-white/60'}`}
-            >
-              <span className="relative z-10">{item.label}</span>
-              <motion.span 
-                className={`absolute -bottom-2 left-0 h-[1px] bg-primary transition-all duration-300 ${currentPage === item.value ? 'w-full' : 'w-0 group-hover:w-full'}`}
-                layoutId="navUnderline"
-              />
-            </motion.button>
-          ))}
-          <motion.button 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-            onClick={() => setPage('contact')}
-            className="relative px-8 py-3 bg-primary text-dark font-black text-[11px] tracking-[0.2em] uppercase rounded-lg hover:bg-white hover:scale-105 transition-all active:scale-95 glow-primary"
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center h-14">
+
+          {/* Brand */}
+          <motion.button
+            className="flex items-center gap-3 group flex-shrink-0 mr-auto"
+            onClick={() => handleNav('home')}
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
           >
-            Book Session
+            <div className="relative">
+              <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center font-display text-dark text-2xl shadow-lg">
+                K
+              </div>
+              <div className="absolute -inset-1 bg-primary/30 blur-lg rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </div>
+            <div className="leading-none">
+              <p className="hidden lg:block text-[13px] font-bold tracking-tight text-white">KARTHIK SHEKAR ACHARYA</p>
+              <p className="hidden sm:block lg:hidden text-[12px] font-bold tracking-tight text-white">K. SHEKAR ACHARYA</p>
+              <p className="text-[9px] font-inter text-primary tracking-[0.35em] font-black uppercase mt-0.5">Elite Athlete • Actor</p>
+            </div>
           </motion.button>
-        </div>
 
-        {/* Mobile Toggle */}
-        <button className="lg:hidden w-10 h-10 flex items-center justify-center text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-          {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-0 top-0 left-0 w-full h-screen bg-dark/95 backdrop-blur-3xl z-[60] flex flex-col items-center justify-center gap-8 p-10"
-          >
-            <button className="absolute top-8 right-8 text-white" onClick={() => setIsMobileMenuOpen(false)}><X size={32} /></button>
+          {/* Desktop / Tablet nav links */}
+          <div className="hidden md:flex items-center gap-1">
             {navItems.map((item, i) => (
               <motion.button
                 key={item.value}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: -12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                onClick={() => { setPage(item.value); setIsMobileMenuOpen(false); }}
-                className={`text-5xl font-display tracking-widest uppercase ${currentPage === item.value ? 'text-primary' : 'text-white/40'}`}
+                transition={{ delay: i * 0.07, duration: 0.35 }}
+                onClick={() => handleNav(item.value)}
+                className={`relative px-3 lg:px-4 py-2 rounded-lg text-[11px] font-bold tracking-[0.15em] uppercase transition-all duration-200 ${
+                  currentPage === item.value
+                    ? 'bg-primary text-dark shadow-md'
+                    : 'text-white/55 hover:text-white hover:bg-white/5'
+                }`}
               >
                 {item.label}
               </motion.button>
             ))}
-            <motion.button 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              onClick={() => { setPage('contact'); setIsMobileMenuOpen(false); }}
-              className="mt-8 bg-primary text-dark px-12 py-5 rounded-2xl font-black text-sm tracking-widest uppercase"
+          </div>
+
+          {/* Right side actions */}
+          <div className="flex items-center gap-2 ml-auto">
+            {/* Full CTA — desktop only */}
+            <motion.button
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.45, duration: 0.35 }}
+              onClick={() => handleNav('contact')}
+              className="hidden lg:inline-flex items-center px-5 py-2.5 bg-primary text-dark font-black text-[11px] tracking-[0.2em] uppercase rounded-lg hover:bg-white hover:scale-105 transition-all active:scale-95 shadow-lg glow-primary"
             >
               Book Session
             </motion.button>
-          </motion.div>
+
+            {/* Compact CTA — tablet only */}
+            <motion.button
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.45, duration: 0.35 }}
+              onClick={() => handleNav('contact')}
+              className="hidden md:inline-flex lg:hidden items-center px-4 py-2 border border-primary/60 text-primary font-black text-[10px] tracking-[0.2em] uppercase rounded-lg hover:bg-primary hover:text-dark transition-all active:scale-95"
+            >
+              Contact
+            </motion.button>
+
+            {/* Mobile hamburger */}
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="md:hidden w-10 h-10 flex items-center justify-center text-white/80 hover:text-primary hover:bg-white/5 rounded-lg transition-all"
+              aria-label="Open navigation"
+            >
+              <Menu size={22} />
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile Drawer */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              key="backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+
+            {/* Drawer panel */}
+            <motion.aside
+              key="drawer"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 28, stiffness: 260 }}
+              className="fixed top-0 right-0 h-full w-[78vw] max-w-[320px] z-[70] bg-dark border-l border-white/8 flex flex-col shadow-2xl"
+            >
+              {/* Drawer header */}
+              <div className="flex items-center justify-between px-5 py-5 border-b border-white/5">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center font-display text-dark text-lg">K</div>
+                  <span className="text-[10px] font-black text-primary tracking-[0.3em] uppercase">Navigation</span>
+                </div>
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-8 h-8 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                  aria-label="Close menu"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Nav links */}
+              <nav className="flex-1 flex flex-col p-3 gap-1 overflow-y-auto">
+                {[...navItems, { label: 'Contact', value: 'contact' as Page }].map((item, i) => (
+                  <motion.button
+                    key={item.value}
+                    initial={{ opacity: 0, x: 24 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.055 }}
+                    onClick={() => handleNav(item.value)}
+                    className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-[12px] font-bold tracking-[0.12em] uppercase transition-all ${
+                      currentPage === item.value
+                        ? 'bg-primary text-dark shadow-md'
+                        : 'text-white/55 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    <span>{item.label}</span>
+                    <ChevronRight size={15} className={currentPage === item.value ? 'text-dark/60' : 'text-white/15'} />
+                  </motion.button>
+                ))}
+              </nav>
+
+              {/* CTA */}
+              <div className="p-4 border-t border-white/5">
+                <motion.button
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.38 }}
+                  onClick={() => handleNav('contact')}
+                  className="w-full py-3.5 bg-primary text-dark font-black text-[12px] tracking-[0.2em] uppercase rounded-xl hover:bg-white transition-all active:scale-95 shadow-lg"
+                >
+                  Book Session
+                </motion.button>
+              </div>
+            </motion.aside>
+          </>
         )}
       </AnimatePresence>
-    </nav>
+    </>
   );
 };
 
