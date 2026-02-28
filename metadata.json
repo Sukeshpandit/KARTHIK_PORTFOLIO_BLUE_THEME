@@ -1,0 +1,7 @@
+{
+  "name": "The Pro Athlete & Artist Portfolio",
+  "description": "A multi-faceted professional portfolio for a National Bodybuilder, Actor, Certified Trainer, and Wildlife Rescuer featuring real-time social integration and interactive showcases.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
