@@ -130,7 +130,7 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
               { year: '2018', title: 'National Glory', desc: 'Secured Gold at the National Bodybuilding Championship. Certified as Elite Trainer.', icon: Dumbbell, side: 'right' },
               { year: '2020', title: 'Silver Screen Debut', desc: 'Cast as a lead antagonist in a major regional action blockbuster.', icon: Clapperboard, side: 'left' },
               { year: '2022', title: 'Wildlife Guardian', desc: 'Completed 500+ successful snake rescues and started awareness programs.', icon: ShieldAlert, side: 'right' },
-              { year: '2025', title: 'Elite Pro Gym', desc: 'Launched state-of-the-art training facility in Mumbai.', icon: Star, side: 'left' },
+              { year: '2025', title: 'Elite Pro Gym', desc: 'Launched state-of-the-art training facility in Bengaluru.', icon: Star, side: 'left' },
             ].map((item, i) => (
               <motion.div 
                 key={i}
@@ -171,7 +171,7 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
           <StatCard label="Clients Transformed" value="1,200+" icon={Users} />
           <StatCard label="Movies & Projects" value="12+" icon={Clapperboard} />
           <StatCard label="Snakes Rescued" value="850+" icon={ShieldAlert} />
-          <StatCard label="Years Experience" value="10+" icon={Clock} />
+          <StatCard label="Years Experie  nce" value="10+" icon={Clock} />
         </div>
       </section>
 
@@ -180,23 +180,25 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row justify-between items-end gap-12">
             <SectionHeading title="Real-Time Impact" subtitle="Social Presence" align="left" />
-            <div className="flex flex-wrap gap-6 mb-24">
-              <div className="glass-morphism px-8 py-6 flex items-center gap-6 rounded-3xl">
-                <div className="w-12 h-12 bg-red-600/10 rounded-2xl flex items-center justify-center text-red-600">
-                  <Youtube size={28} />
+            <div className="flex gap-3 sm:gap-6 mb-24">
+              <div className="glass-morphism px-4 py-3 sm:px-8 sm:py-6 flex items-center gap-3 sm:gap-6 rounded-2xl sm:rounded-3xl flex-1 sm:flex-none">
+                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-red-600/10 rounded-xl sm:rounded-2xl flex items-center justify-center text-red-600 flex-shrink-0">
+                  <Youtube size={18} className="sm:hidden" />
+                  <Youtube size={28} className="hidden sm:block" />
                 </div>
                 <div>
-                  <p className="text-3xl font-display">250K+</p>
-                  <p className="text-[10px] text-white/30 uppercase font-black tracking-[0.2em]">Subscribers</p>
+                  <p className="text-xl sm:text-3xl font-display leading-none">250K+</p>
+                  <p className="text-[9px] sm:text-[10px] text-white/30 uppercase font-black tracking-[0.2em] mt-0.5">Subscribers</p>
                 </div>
               </div>
-              <div className="glass-morphism px-8 py-6 flex items-center gap-6 rounded-3xl">
-                <div className="w-12 h-12 bg-pink-600/10 rounded-2xl flex items-center justify-center text-pink-600">
-                  <Instagram size={28} />
+              <div className="glass-morphism px-4 py-3 sm:px-8 sm:py-6 flex items-center gap-3 sm:gap-6 rounded-2xl sm:rounded-3xl flex-1 sm:flex-none">
+                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-pink-600/10 rounded-xl sm:rounded-2xl flex items-center justify-center text-pink-600 flex-shrink-0">
+                  <Instagram size={18} className="sm:hidden" />
+                  <Instagram size={28} className="hidden sm:block" />
                 </div>
                 <div>
-                  <p className="text-3xl font-display">180K+</p>
-                  <p className="text-[10px] text-white/30 uppercase font-black tracking-[0.2em]">Followers</p>
+                  <p className="text-xl sm:text-3xl font-display leading-none">180K+</p>
+                  <p className="text-[9px] sm:text-[10px] text-white/30 uppercase font-black tracking-[0.2em] mt-0.5">Followers</p>
                 </div>
               </div>
             </div>
@@ -242,14 +244,14 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
       </section>
 
       {/* Acting Teaser */}
-      <section className="relative py-64 px-6 overflow-hidden">
+      <section className="relative pt-64 pb-24 px-6 overflow-hidden">
         <div 
           className="absolute inset-0 z-0"
           style={{ 
-            backgroundImage: 'url(https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop)',
+            backgroundImage: 'url(/assets/images/Prabas.jpg)',
             backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            filter: 'brightness(0.15)'
+            backgroundPosition: 'center 30%',
+            filter: 'brightness(0.4)'
           }}
         />
         <div className="absolute inset-0 bg-mesh opacity-30" />
@@ -282,20 +284,20 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
       </section>
 
       {/* Wildlife Rescue CTA */}
-      <section className="py-48 bg-dark px-6">
-        <div className="max-w-7xl mx-auto glass-morphism p-12 md:p-24 flex flex-col lg:flex-row items-center gap-20 overflow-hidden relative rounded-[3rem]">
+      <section className="py-32 bg-dark px-6">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-20 overflow-hidden ">
           <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-primary/5 rounded-full -mr-80 -mt-80 blur-[120px]" />
           <div className="w-full lg:w-1/2 relative z-10">
             <SectionHeading title="Wildlife Rescue" subtitle="Snake Specialist" align="left" />
             <p className="text-white/40 font-inter text-lg mb-12 leading-relaxed">
-              In the concrete jungle of Mumbai, wildlife often finds itself in conflict with humans. 
+              In the concrete jungle of Bengaluru, wildlife often finds itself in conflict with humans. 
               Vikram has dedicated his life to the safe rescue and relocation of snakes, 
               ensuring both human safety and animal welfare.
             </p>
             <div className="flex flex-col sm:flex-row gap-6">
               <button 
                 onClick={() => setPage('wildlife')}
-                className="bg-primary text-white px-10 py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-xs flex items-center justify-center gap-3 hover:bg-white hover:text-dark hover:scale-105 transition-all active:scale-95 shadow-xl"
+                className="bg-red-600 text-white px-10 py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-xs flex items-center justify-center gap-3 hover:bg-white hover:text-dark hover:scale-105 transition-all active:scale-95 shadow-xl"
               >
                 <ShieldAlert size={20} /> Report Emergency
               </button>
