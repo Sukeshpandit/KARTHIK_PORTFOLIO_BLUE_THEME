@@ -8,11 +8,42 @@ import {
   Award, 
   Star,
   Zap,
-  Target
+  Target,
+  Calendar
 } from 'lucide-react';
 import { SectionHeading, Page, Reveal } from './Shared';
 
 export const Fitness = ({ setPage }: { setPage: (p: Page) => void }) => {
+  const monthlyPlans = [
+    {
+      duration: '1 Month',
+      months: 1,
+      price: '₹3,000',
+      perMonth: '₹3,000',
+      savings: null,
+      badge: null,
+      features: ['Full Gym Access', 'Group Classes', 'Locker Room', 'Basic Nutrition Tips'],
+    },
+    {
+      duration: '3 Months',
+      months: 3,
+      price: '₹7,500',
+      perMonth: '₹2,500',
+      savings: 'Save ₹1,500',
+      badge: 'Popular',
+      features: ['Full Gym Access', 'Group Classes', 'Locker Room', 'Nutrition Consultation', 'Progress Tracking', '1 Free PT Session'],
+    },
+    {
+      duration: '6 Months',
+      months: 6,
+      price: '₹12,000',
+      perMonth: '₹2,000',
+      savings: 'Save ₹6,000',
+      badge: 'Best Value',
+      features: ['Full Gym Access', 'Group Classes', 'Locker Room', 'Monthly Nutrition Review', 'Progress Tracking', '3 Free PT Sessions', 'Steam Room Access', 'Priority Booking'],
+    },
+  ];
+
   const packages = [
     {
       name: 'Personal Training',
@@ -186,6 +217,65 @@ export const Fitness = ({ setPage }: { setPage: (p: Page) => void }) => {
                   ))}
                 </ul>
                 <button className={`w-full py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-[11px] transition-all duration-300 ${pkg.popular ? 'bg-primary text-dark hover:bg-white glow-primary' : 'glass-morphism hover:bg-white hover:text-dark'}`}>
+                  Get Started
+                </button>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Monthly Membership */}
+      <section className="py-48 bg-surface px-6">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeading title="Monthly Memberships" subtitle="Gym Access Plans" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {monthlyPlans.map((plan, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.2 }}
+                whileHover={{ y: -16 }}
+                className={`glass-morphism p-12 flex flex-col relative rounded-[3rem] transition-all duration-500 ${plan.badge === 'Popular' ? 'border-primary/30 ring-1 ring-primary/10 bg-primary/5' : ''}`}
+              >
+                {plan.badge && (
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-primary text-dark text-[10px] font-black px-6 py-2 rounded-full uppercase tracking-[0.3em] shadow-xl whitespace-nowrap">
+                    {plan.badge}
+                  </div>
+                )}
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                    <Calendar size={20} />
+                  </div>
+                  <h3 className="text-2xl tracking-tight font-bold">{plan.duration}</h3>
+                </div>
+                <div className="flex items-baseline gap-2 mb-2">
+                  <span className="text-5xl font-display text-primary">{plan.price}</span>
+                  <span className="text-white/30 text-[10px] uppercase font-black tracking-[0.3em]">total</span>
+                </div>
+                <p className="text-white/40 text-xs font-bold uppercase tracking-widest mb-2">{plan.perMonth} / month</p>
+                {plan.savings && (
+                  <span className="inline-block self-start bg-primary/15 text-primary text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest mb-8">
+                    {plan.savings}
+                  </span>
+                )}
+                {!plan.savings && <div className="mb-8" />}
+                <ul className="flex flex-col gap-5 mb-12 flex-grow">
+                  {plan.features.map((f, j) => (
+                    <li key={j} className="flex items-center gap-4 text-sm text-white/50 font-inter">
+                      <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                        <Check size={12} />
+                      </div>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  onClick={() => setPage('contact')}
+                  className={`w-full py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-[11px] transition-all duration-300 ${plan.badge === 'Popular' ? 'bg-primary text-dark hover:bg-white glow-primary' : 'glass-morphism hover:bg-white hover:text-dark'}`}
+                >
                   Get Started
                 </button>
               </motion.div>
