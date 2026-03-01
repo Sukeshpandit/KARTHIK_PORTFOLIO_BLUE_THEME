@@ -52,7 +52,7 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
           <div 
             className="absolute inset-0 parallax-bg"
             style={{ 
-              backgroundImage: 'url(/assets/images/Tiger_prabrakar.jpg)',
+              backgroundImage: `url(${import.meta.env.BASE_URL}assets/images/Tiger_prabrakar.jpg)`,
               filter: 'brightness(0.65)'
             }}
           />
@@ -248,7 +248,7 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
         <div 
           className="absolute inset-0 z-0"
           style={{ 
-            backgroundImage: 'url(/assets/images/Prabas.jpg)',
+            backgroundImage: `url(${import.meta.env.BASE_URL}assets/images/Prabas.jpg)`,
             backgroundSize: 'cover',
             backgroundPosition: 'center 30%',
             filter: 'brightness(0.4)'

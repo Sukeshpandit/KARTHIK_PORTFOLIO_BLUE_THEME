@@ -12,11 +12,12 @@ import {
 } from 'lucide-react';
 import { SectionHeading, Page, Reveal } from './Shared';
 
+const base = import.meta.env.BASE_URL;
 const wildlifeSlides = [
-  { src: '/assets/wildlife/rescue-1.jpg', caption: 'Live Cobra Rescue · Bengaluru' },
-  { src: '/assets/wildlife/rescue-2.jpg', caption: 'Python Relocation · Mysuru' },
-  { src: '/assets/wildlife/rescue-3.jpg', caption: 'Viper Handling · Mumbai' },
-  { src: '/assets/wildlife/rescue-4.jpg', caption: 'Field Operation · Goa' },
+  { src: `${base}assets/wildlife/rescue-1.jpg`, caption: 'Live Cobra Rescue · Bengaluru' },
+  { src: `${base}assets/wildlife/rescue-2.jpg`, caption: 'Python Relocation · Mysuru' },
+  { src: `${base}assets/wildlife/rescue-3.jpg`, caption: 'Viper Handling · Mumbai' },
+  { src: `${base}assets/wildlife/rescue-4.jpg`, caption: 'Field Operation · Goa' },
 ];
 
 export const Wildlife = ({ setPage }: { setPage: (p: Page) => void }) => {
