@@ -11,18 +11,27 @@ import {
   Users,
   Clock,
   Star,
-  ChevronRight
+  ChevronRight,
+  ChevronLeft
 } from 'lucide-react';
 import { SectionHeading, StatCard, Page, Marquee, Reveal } from './Shared';
 import { useEffect, useState, useRef } from 'react';
 
 export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
   const [taglineIndex, setTaglineIndex] = useState(0);
+
   const taglines = [
     "National Level Bodybuilder",
     "Professional Actor",
     "Elite Gym Trainer",
     "Wildlife Rescuer"
+  ];
+
+  const thumbnails: { id: Page; label: string; tag: string; image: string }[] = [
+    { id: 'fitness',  label: 'Fitness',  tag: 'Training', image: `${import.meta.env.BASE_URL}assets/images/Tiger_prabrakar.jpg` },
+    { id: 'acting',   label: 'Acting',   tag: 'Cinema',   image: `${import.meta.env.BASE_URL}assets/images/Prabas.jpg` },
+    { id: 'wildlife', label: 'Wildlife', tag: 'Rescue',   image: 'https://images.unsplash.com/photo-1531386151447-fd76ad50012f?w=480&q=70' },
+    { id: 'gallery',  label: 'Journey',  tag: 'Path',   image: 'https://picsum.photos/seed/karthik-gallery/480/300' },
   ];
 
   const containerRef = useRef(null);
@@ -44,73 +53,166 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
   return (
     <div className="w-full bg-mesh" ref={containerRef}>
       {/* Hero Section */}
-      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
-        <motion.div 
-          style={{ scale: heroScale, opacity: heroOpacity }}
-          className="absolute inset-0 z-0"
-        >
-          <div 
-            className="absolute inset-0 parallax-bg"
-            style={{ 
-              backgroundImage: `url(${import.meta.env.BASE_URL}assets/images/Tiger_prabrakar.jpg)`,
-              filter: 'brightness(0.65)'
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-dark/80 via-transparent to-dark z-1" />
-        </motion.div>
-        
-        <div className="relative z-10 text-center px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <p className="text-primary font-black tracking-[0.2rem] uppercase text-[18px] mb-8">
-              The Journey of Excellence
-            </p>
-            <Reveal width="100%">
-              <h1 className="text-huge mb-10 skew-10">
-                KARTHIK SHEKAR ACHARYA
-              </h1>
-            </Reveal>
-            <div className="h-16 overflow-hidden mb-16">
-              <AnimatePresence mode="wait">
-                <motion.p 
-                  key={taglineIndex}
-                  initial={{ y: 50, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -50, opacity: 0 }}
-                  className="text-3xl md:text-5xl font-display text-white/60 tracking-widest uppercase italic"
-                >
-                  {taglines[taglineIndex]}
-                </motion.p>
-              </AnimatePresence>
-            </div>
-            <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
-              <button 
-                onClick={() => setPage('fitness')}
-                className="group relative px-12 py-5 bg-primary text-dark font-black rounded-xl overflow-hidden transition-all hover:scale-105 active:scale-95 glow-primary"
-              >
-                <span className="relative z-10 uppercase tracking-[0.2em] text-xs">Explore Journey</span>
-              </button>
-              <button 
-                onClick={() => setPage('contact')}
-                className="px-12 py-5 border border-white/10 text-white font-black rounded-xl hover:bg-white/5 transition-all uppercase tracking-[0.2em] text-xs backdrop-blur-sm"
-              >
-                Book a Session
-              </button>
-            </div>
-          </motion.div>
+      <section className="relative w-full flex flex-col overflow-hidden bg-dark" style={{ height: '100svh', minHeight: '600px' }}>
+
+        {/* ── FULLSCREEN HERO IMAGE (background layer) ── */}
+        <motion.img
+          initial={{ scale: 1.06, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.2 }}
+          src={`${import.meta.env.BASE_URL}assets/images/heroImage2.png`}
+          alt="Karthik Shekar Acharya"
+          className="absolute inset-0 z-0 w-full h-full object-cover"
+          style={{ objectPosition: 'center 100%' }}
+        />
+
+        {/* Overlay — dark on left for text readability, fades to clear on right */}
+        <div className="absolute inset-0 z-[1] bg-gradient-to-r from-dark/95 via-dark/60 to-dark/15 pointer-events-none" />
+        {/* Bottom fade into carousel */}
+        {/* <div className="absolute inset-0 z-[1] bg-gradient-to-t from-dark/90 via-transparent to-dark/40 pointer-events-none" /> */}
+
+        {/* Ink-splatter / watercolour ambient blobs (sit above bg, below content) */}
+        <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden">
+          <div className="absolute -top-24 -left-16 w-[520px] h-[520px] bg-blue-900/10 rounded-full blur-[130px]" />
+          <div className="absolute top-1/3 left-1/3 w-[280px] h-[380px] bg-stone-700/10 rounded-[60%_40%_50%_70%/40%_60%_40%_60%] blur-[90px]" />
+          <div className="absolute top-1/2 right-1/4 w-[180px] h-[260px] bg-stone-800/15 rounded-full blur-[60px] rotate-12" />
         </div>
 
-        <motion.div 
-          animate={{ y: [0, 15, 0] }}
-          transition={{ repeat: Infinity, duration: 2.5 }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/20 flex flex-col items-center gap-4"
+        {/* ── Main split layout ── */}
+        <div className="flex-1 flex relative z-10 min-h-0">
+
+          {/* LEFT PANEL */}
+          <div className="w-full lg:w-[42%] flex flex-col px-8 md:px-14 pt-8 pb-4">
+
+            {/* Name block */}
+            <div className="mt-6 lg:mt-auto mb-6">
+              <motion.div
+                initial={{ opacity: 0, x: -40 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7, delay: 0.2 }}
+              >
+                <h1
+                  className="font-display leading-none text-white"
+                  style={{ fontSize: 'clamp(3.8rem, 11vw, 7.5rem)', letterSpacing: '-0.02em' }}
+                >
+                  KARTHIK
+                </h1>
+                <p className="text-white/45 font-black uppercase tracking-[0.35em] text-sm md:text-base mt-1 mb-4">
+                  Shekar Acharya
+                </p>
+              </motion.div>
+
+              {/* Animated role list */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.45 }}
+                className="space-y-3 mb-8"
+              >
+                {taglines.map((line, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <div
+                      className="h-[2px] flex-shrink-0 rounded-full transition-all duration-700"
+                      style={{
+                        width: i === taglineIndex ? '1.5rem' : '0.5rem',
+                        background: i === taglineIndex ? 'var(--color-primary)' : 'rgba(255,255,255,0.15)',
+                      }}
+                    />
+                    <p
+                      className="text-sm font-inter transition-all duration-500"
+                      style={{ color: i === taglineIndex ? '#fff' : 'rgba(255,255,255,0.22)' }}
+                    >
+                      {line}
+                    </p>
+                  </div>
+                ))}
+              </motion.div>
+
+              {/* CTA buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+                className="flex flex-col sm:flex-row gap-4"
+              >
+                <button
+                  onClick={() => setPage('fitness')}
+                  className="px-9 py-4 bg-primary text-dark font-black rounded-xl uppercase tracking-[0.2em] text-xs hover:scale-105 active:scale-95 transition-all glow-primary"
+                >
+                  Explore Journey
+                </button>
+                <button
+                  onClick={() => setPage('contact')}
+                  className="px-9 py-4 border border-white/20 text-white font-black rounded-xl hover:bg-white/10 transition-all uppercase tracking-[0.2em] text-xs backdrop-blur-sm"
+                >
+                  Book a Session
+                </button>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* RIGHT SIDE — quote overlay only (image is now fullscreen bg) */}
+          <div className="hidden lg:flex w-[58%] items-end justify-end pb-16 pr-12">
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.95, duration: 0.8 }}
+              className="text-right max-w-[300px]"
+            >
+              {/* <span className="font-display text-primary leading-none" style={{ fontSize: '5rem' }}>"</span> */}
+              <p className="font-black uppercase leading-snug text-white/90" style={{ fontSize: 'clamp(1rem, 1.6vw, 1.3rem)' }}>
+                Strength doesn&apos;t live in your{' '}
+                <span className="text-white/40">muscles</span>
+              </p>
+              <p className="font-black uppercase leading-snug text-white/90 mt-1" style={{ fontSize: 'clamp(1rem, 1.6vw, 1.3rem)' }}>
+                It lives in your{' '}
+                <span className="text-primary">will</span>
+              </p>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* ── BOTTOM THUMBNAIL CAROUSEL – auto-scroll right→left loop ── */}
+        <div
+          className="relative z-20 flex-shrink-0 overflow-hidden"
+          style={{ height: '14rem' }}
         >
-          <p className="text-[9px] uppercase font-black tracking-[0.5em]">Scroll</p>
-          <div className="w-[1px] h-20 bg-gradient-to-b from-primary/50 to-transparent" />
-        </motion.div>
+          {/* Edge fade masks */}
+          <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-dark/80 to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-dark/80 to-transparent z-10 pointer-events-none" />
+
+          {/* Scrolling strip – doubled for seamless loop */}
+          <div className="animate-marquee-thumb flex items-center h-full gap-8 w-max py-3 px-4 hover:[animation-play-state:paused]">
+            {[...thumbnails, ...thumbnails].map((thumb, i) => (
+              <button
+                key={i}
+                onClick={() => setPage(thumb.id)}
+                className="relative flex-shrink-0 rounded-2xl overflow-hidden group hover:ring-2 hover:ring-primary/60 transition-all h-full"
+                style={{ aspectRatio: '16/9' }}
+              >
+                <img
+                  src={thumb.image}
+                  alt={thumb.label}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  style={{ objectPosition: 'center 25%' }}
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/30 to-transparent" />
+                {/* Tag pill — top-left */}
+                <div className="absolute top-3 left-3">
+                  <span className="px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.2em] bg-primary text-dark shadow-lg">
+                    {thumb.tag}
+                  </span>
+                </div>
+                {/* Label — solid dark strip at bottom */}
+                <div className="absolute bottom-0 left-0 right-0 px-3 py-2.5 bg-dark/85 backdrop-blur-sm flex items-center justify-between gap-2">
+                  <p className="text-[12px] font-black uppercase tracking-[0.15em] text-white leading-none truncate">{thumb.label}</p>
+                  <ChevronRight size={12} className="text-primary flex-shrink-0" />
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Marquee Section */}

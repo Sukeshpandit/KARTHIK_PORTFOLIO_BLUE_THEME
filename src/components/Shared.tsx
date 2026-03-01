@@ -116,7 +116,7 @@ export const Navbar = ({ currentPage, setPage }: { currentPage: Page, setPage: (
           {/* Right side actions */}
           <div className="flex items-center gap-2 ml-auto">
             {/* Full CTA — desktop only */}
-            <motion.button
+            {/* <motion.button
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.45, duration: 0.35 }}
@@ -124,7 +124,7 @@ export const Navbar = ({ currentPage, setPage }: { currentPage: Page, setPage: (
               className="hidden lg:inline-flex items-center px-5 py-2.5 bg-primary text-dark font-black text-[11px] tracking-[0.2em] uppercase rounded-lg hover:bg-white hover:scale-105 transition-all active:scale-95 shadow-lg glow-primary"
             >
               Book Session
-            </motion.button>
+            </motion.button> */}
 
             {/* Compact CTA — tablet only */}
             <motion.button
