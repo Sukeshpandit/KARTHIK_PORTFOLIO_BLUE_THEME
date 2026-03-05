@@ -28,8 +28,21 @@ export const Acting = ({ setPage }: { setPage: (p: Page) => void }) => {
 
   return (
     <div className="pt-32 pb-20">
-      {/* Hero */}
-      <section className="px-6 mb-48">
+      {/* Hero — video background */}
+      <section className="relative min-h-[88vh] flex items-center -mt-32 pt-32 mb-48">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-contain origin-center"
+          style={{ transform: 'rotate(-90deg) scale(1.28)' }}
+          aria-hidden
+        >
+          <source src={`${import.meta.env.BASE_URL}assets/video/hero.mp4`} type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-dark/50 z-[1]" aria-hidden />
+        <div className="relative z-10 w-full px-6">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-24 items-center">
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
@@ -37,48 +50,47 @@ export const Acting = ({ setPage }: { setPage: (p: Page) => void }) => {
             viewport={{ once: true }}
             className="w-full lg:w-1/3"
           >
-            <div className="aspect-[3/4] rounded-[3rem] overflow-hidden border border-white/5 relative group skew-10">
-              <img 
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop" 
-                alt="Vikram Headshot"
-                className="w-full h-full object-cover -skew-10 scale-125"
-                referrerPolicy="no-referrer"
-              />
               <div className="absolute inset-0 bg-gradient-to-t from-dark/90 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end p-10">
                 <button className="w-full bg-white text-dark py-4 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] flex items-center justify-center gap-3 shadow-2xl">
                   <Download size={18} /> Download Headshots
                 </button>
               </div>
-            </div>
           </motion.div>
           <motion.div 
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="w-full lg:w-2/3"
+            className="w-full "
           >
-            <Reveal width="100%">
-              <SectionHeading title="The Actor" subtitle="Screen Portfolio" align="left" />
-            </Reveal>
+            <div className="w-screen relative left-1/2 -ml-[50vw] pl-6 pr-0">
+              <Reveal width="100%">
+                <SectionHeading title="The Actor" subtitle="Screen Portfolio" align="left" />
+              </Reveal>
+            </div>
             <Reveal width="100%" delay={0.3}>
-              <p className="text-2xl text-white/50 font-inter mb-12 leading-relaxed">
-                With a commanding physical presence and a versatile range, Vikram has established 
-                himself as a formidable talent in the industry. Specializing in high-intensity 
-                action and complex character roles.
-              </p>
+              <div className="w-screen relative right-1/2 pr-6 pl-0 text-right">
+                <p className="text-2xl text-white/50 font-inter mb-12 leading-relaxed">
+                 commanding physical presence <br /> and a versatile range
+                  {/* <br /> established 
+                  himself as a formidable talent in the industry. <br /> Specializing in high-intensity 
+                  action and complex character roles. */}
+                </p>
+              </div>
             </Reveal>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 mb-16">
-              <div className="glass-morphism p-8 rounded-3xl">
-                <p className="text-primary font-display text-5xl mb-2">08</p>
-                <p className="text-[10px] uppercase font-black text-white/30 tracking-[0.3em]">Feature Films</p>
-              </div>
-              <div className="glass-morphism p-8 rounded-3xl">
-                <p className="text-primary font-display text-5xl mb-2">04</p>
-                <p className="text-[10px] uppercase font-black text-white/30 tracking-[0.3em]">Web Series</p>
-              </div>
-              <div className="glass-morphism p-8 rounded-3xl">
-                <p className="text-primary font-display text-5xl mb-2 italic">Hindi</p>
-                <p className="text-[10px] uppercase font-black text-white/30 tracking-[0.3em]">Primary Language</p>
+            <div className="w-screen relative right-1/2 mr-[50vw] pr-6 pl-0 flex justify-end">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-16 max-w-md sm:max-w-lg">
+                <div className="glass-morphism p-4 sm:p-5 rounded-2xl">
+                  <p className="text-primary font-display text-3xl sm:text-4xl mb-1">08</p>
+                  <p className="text-[9px] uppercase font-black text-white/30 tracking-[0.25em]">Feature Films</p>
+                </div>
+                <div className="glass-morphism p-4 sm:p-5 rounded-2xl">
+                  <p className="text-primary font-display text-3xl sm:text-4xl mb-1">04</p>
+                  <p className="text-[9px] uppercase font-black text-white/30 tracking-[0.25em]">Web Series</p>
+                </div>
+                <div className="glass-morphism p-4 sm:p-5 rounded-2xl">
+                  <p className="text-primary font-display text-3xl sm:text-4xl mb-1 italic">Kannada</p>
+                  <p className="text-[9px] uppercase font-black text-white/30 tracking-[0.25em]">Primary Language</p>
+                </div>
               </div>
             </div>
             <div className="flex flex-wrap gap-4">
@@ -89,6 +101,7 @@ export const Acting = ({ setPage }: { setPage: (p: Page) => void }) => {
               ))}
             </div>
           </motion.div>
+        </div>
         </div>
       </section>
 
