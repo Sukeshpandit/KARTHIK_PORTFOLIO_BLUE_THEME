@@ -383,14 +383,16 @@ export const WhatsAppButton = () => {
 };
 
 export const Marquee = ({ items }: { items: string[] }) => (
-  <div className="relative flex overflow-x-hidden bg-primary py-6 border-y border-dark/10 skew-10 -rotate-2 scale-105 my-20">
-    <div className="animate-marquee whitespace-nowrap flex items-center">
-      {[...items, ...items, ...items].map((item, i) => (
-        <div key={i} className="flex items-center mx-16">
-          <span className="text-dark font-display text-6xl uppercase tracking-widest">{item}</span>
-          <Star className="ml-16 text-dark/30" size={24} fill="currentColor" />
-        </div>
-      ))}
+  <div className="overflow-hidden my-20">
+    <div className="relative flex overflow-x-hidden bg-primary py-6 border-y border-dark/10 skew-10 -rotate-2 scale-105">
+      <div className="animate-marquee whitespace-nowrap flex items-center">
+        {[...items, ...items, ...items].map((item, i) => (
+          <div key={i} className="flex items-center mx-16">
+            <span className="text-dark font-display text-6xl uppercase tracking-widest">{item}</span>
+            <Star className="ml-16 text-dark/30" size={24} fill="currentColor" />
+          </div>
+        ))}
+      </div>
     </div>
   </div>
 );

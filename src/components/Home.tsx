@@ -51,7 +51,7 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
   }, []);
 
   return (
-    <div className="w-full bg-mesh" ref={containerRef}>
+    <div className="w-full bg-mesh overflow-x-hidden" ref={containerRef}>
       {/* Hero Section */}
       <section className="relative w-full flex flex-col overflow-hidden bg-dark" style={{ height: '100svh', minHeight: '600px' }}>
 
@@ -82,10 +82,10 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
         <div className="flex-1 flex relative z-10 min-h-0">
 
           {/* LEFT PANEL */}
-          <div className="w-full lg:w-[42%] flex flex-col px-8 md:px-14 pt-8 pb-4">
+          <div className="w-full lg:w-[42%] flex flex-col justify-center items-center lg:justify-end lg:items-stretch px-4 sm:px-8 md:px-14 pt-8 pb-4">
 
             {/* Name block */}
-            <div className="mt-6 lg:mt-auto mb-6">
+            <div className="mt-6 lg:mt-auto mb-6 text-center lg:text-left w-full max-w-md lg:max-w-none">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -93,7 +93,7 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
               >
                 <h1
                   className="font-display leading-none text-white"
-                  style={{ fontSize: 'clamp(3.8rem, 11vw, 7.5rem)', letterSpacing: '-0.02em' }}
+                  style={{ fontSize: 'clamp(2.4rem, 11vw, 7.5rem)', letterSpacing: '-0.02em' }}
                 >
                   KARTHIK
                 </h1>
@@ -110,7 +110,7 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
                 className="space-y-3 mb-8"
               >
                 {taglines.map((line, i) => (
-                  <div key={i} className="flex items-center gap-3">
+                  <div key={i} className="flex items-center justify-center lg:justify-start gap-3">
                     <div
                       className="h-[2px] flex-shrink-0 rounded-full transition-all duration-700"
                       style={{
@@ -133,7 +133,7 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
-                className="flex flex-col sm:flex-row gap-4"
+                className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
               >
                 <button
                   onClick={() => setPage('fitness')}
@@ -329,9 +329,9 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
                     <Play fill="currentColor" size={28} />
                   </div>
                 </div>
-                <div className="absolute bottom-10 left-10 right-10">
-                  <p className="text-[10px] text-primary font-black mb-3 uppercase tracking-[0.3em]">Bodybuilding Tips</p>
-                  <h4 className="text-2xl leading-tight tracking-tight">How to build massive shoulders in 4 weeks</h4>
+                <div className="absolute bottom-4 left-4 right-4 sm:bottom-10 sm:left-10 sm:right-10">
+                  <p className="text-[10px] text-primary font-black mb-2 sm:mb-3 uppercase tracking-[0.3em]">Bodybuilding Tips</p>
+                  <h4 className="text-base sm:text-2xl leading-tight tracking-tight">How to build massive shoulders in 4 weeks</h4>
                 </div>
               </motion.div>
             ))}
@@ -346,7 +346,7 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
       </section>
 
       {/* Acting Teaser */}
-      <section className="relative pt-64 pb-24 px-6 overflow-hidden">
+      <section className="relative pt-24 md:pt-48 lg:pt-64 pb-24 px-6 overflow-hidden">
         <div 
           className="absolute inset-0 z-0"
           style={{ 
@@ -359,7 +359,7 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
         <div className="absolute inset-0 bg-mesh opacity-30" />
         <div className="relative z-10 max-w-5xl mx-auto text-center">
           <SectionHeading title="The Screen Presence" subtitle="Acting Portfolio" />
-          <p className="text-2xl text-white/50 font-inter mb-20 leading-relaxed max-w-3xl mx-auto">
+          <p className="text-base sm:text-xl md:text-2xl text-white/50 font-inter mb-12 md:mb-20 leading-relaxed max-w-3xl mx-auto">
             From high-octane action sequences to intense character-driven roles, 
             Vikram brings a unique blend of physical prowess and emotional depth to the silver screen.
           </p>
@@ -370,15 +370,15 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
               { val: '15+', label: 'Commercials' },
               { val: '02', label: 'Awards Won' }
             ].map((stat, i) => (
-              <div key={i} className="glass-morphism p-8 rounded-3xl">
-                <p className="text-5xl font-display text-primary mb-2">{stat.val}</p>
-                <p className="text-[10px] uppercase font-black text-white/30 tracking-[0.2em]">{stat.label}</p>
+              <div key={i} className="glass-morphism p-4 sm:p-6 md:p-8 rounded-2xl md:rounded-3xl">
+                <p className="text-3xl sm:text-4xl md:text-5xl font-display text-primary mb-2">{stat.val}</p>
+                <p className="text-[9px] sm:text-[10px] uppercase font-black text-white/30 tracking-[0.2em]">{stat.label}</p>
               </div>
             ))}
           </div>
           <button 
             onClick={() => setPage('acting')}
-            className="px-16 py-6 bg-white text-dark font-black rounded-2xl hover:bg-primary hover:scale-105 transition-all active:scale-95 uppercase tracking-[0.2em] text-xs shadow-2xl"
+            className="px-10 py-4 sm:px-16 sm:py-6 bg-white text-dark font-black rounded-2xl hover:bg-primary hover:scale-105 transition-all active:scale-95 uppercase tracking-[0.2em] text-xs shadow-2xl"
           >
             View Full Portfolio
           </button>
@@ -386,9 +386,9 @@ export const Home = ({ setPage }: { setPage: (p: Page) => void }) => {
       </section>
 
       {/* Wildlife Rescue CTA */}
-      <section className="py-32 bg-dark px-6">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-20 overflow-hidden ">
-          <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-primary/5 rounded-full -mr-80 -mt-80 blur-[120px]" />
+      <section className="py-32 bg-dark px-6 overflow-hidden">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-20 relative">
+          <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-primary/5 rounded-full blur-[120px] translate-x-1/2 -translate-y-1/2 pointer-events-none" />
           <div className="w-full lg:w-1/2 relative z-10">
             <SectionHeading title="Wildlife Rescue" subtitle="Snake Specialist" align="left" />
             <p className="text-white/40 font-inter text-lg mb-12 leading-relaxed">

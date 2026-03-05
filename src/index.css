@@ -15,6 +15,10 @@
 }
 
 @layer base {
+  html {
+    overflow-x: hidden;
+  }
+
   body {
     @apply bg-dark text-white font-sans antialiased selection:bg-primary selection:text-white overflow-x-hidden;
   }
