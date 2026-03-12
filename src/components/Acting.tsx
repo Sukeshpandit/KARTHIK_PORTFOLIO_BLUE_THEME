@@ -1,16 +1,21 @@
 import { motion } from 'motion/react';
-import { 
-  Clapperboard, 
-  Play, 
-  Star, 
-  Film, 
-  Tv, 
+import {
+  Clapperboard,
+  Play,
+  Star,
+  Film,
+  Tv,
   Download,
   Search,
   Filter
 } from 'lucide-react';
 import { SectionHeading, Page, Reveal } from './Shared';
 import { useState } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export const Acting = ({ setPage }: { setPage: (p: Page) => void }) => {
   const [filter, setFilter] = useState('All');
@@ -29,7 +34,7 @@ export const Acting = ({ setPage }: { setPage: (p: Page) => void }) => {
   return (
     <div className="pt-32 pb-20">
       {/* Hero — video background */}
-      <section className="relative min-h-[88vh] flex items-center -mt-32 pt-32 mb-48">
+      <section className="relative min-h-screen flex items-center -mt-32 pt-32 mb-24 overflow-hidden">
         <video
           autoPlay
           muted
@@ -41,67 +46,46 @@ export const Acting = ({ setPage }: { setPage: (p: Page) => void }) => {
         >
           <source src={`${import.meta.env.BASE_URL}assets/video/hero.mp4`} type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-dark/50 z-[1]" aria-hidden />
-        <div className="relative z-10 w-full px-6">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-24 items-center">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="w-full lg:w-1/3"
-          >
-              <div className="absolute inset-0 bg-gradient-to-t from-dark/90 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end p-10">
-                <button className="w-full bg-white text-dark py-4 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] flex items-center justify-center gap-3 shadow-2xl">
-                  <Download size={18} /> Download Headshots
-                </button>
-              </div>
-          </motion.div>
-          <motion.div 
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="w-full "
-          >
-            <div className="w-screen relative left-1/2 -ml-[50vw] pl-6 pr-0">
-              <Reveal width="100%">
-                <SectionHeading title="The Actor" subtitle="Screen Portfolio" align="left" />
-              </Reveal>
-            </div>
-            <Reveal width="100%" delay={0.3}>
-              <div className="w-screen relative right-1/2 pr-6 pl-0 text-right">
-                <p className="text-2xl text-white/50 font-inter mb-12 leading-relaxed">
-                 commanding physical presence <br /> and a versatile range
-                  {/* <br /> established 
-                  himself as a formidable talent in the industry. <br /> Specializing in high-intensity 
-                  action and complex character roles. */}
-                </p>
-              </div>
-            </Reveal>
-            <div className="w-screen relative right-1/2 mr-[50vw] pr-6 pl-0 flex justify-end">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-16 max-w-md sm:max-w-lg">
-                <div className="glass-morphism p-4 sm:p-5 rounded-2xl">
-                  <p className="text-primary font-display text-3xl sm:text-4xl mb-1">08</p>
-                  <p className="text-[9px] uppercase font-black text-white/30 tracking-[0.25em]">Feature Films</p>
+        {/* Dark overlay on left for text legibility */}
+        <div className="absolute inset-0 bg-gradient-to-r from-dark/70 via-dark/30 to-dark/5 z-[1]" aria-hidden />
+
+
+<div className="relative z-10 w-full px-10 lg:px-20">
+          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
+
+            {/* Left — Text Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="w-full lg:w-1/2 flex flex-col"
+            >
+              <p className="text-primary text-sm font-black uppercase tracking-[0.4em] mb-4">Screen Portfolio</p>
+              <h1 className="font-display text-6xl lg:text-8xl leading-none mb-6">
+                Actor
+              </h1>
+              <p className="text-white/50 font-inter text-lg leading-relaxed mb-10 max-w-md">
+                Commanding physical presence and a versatile range — established as a formidable talent in the industry, specializing in high-intensity action and complex character roles.
+              </p>
+
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-4 max-w-sm">
+                <div className="glass-morphism p-4 rounded-2xl">
+                  <p className="text-primary font-display text-3xl mb-1">08</p>
+                  <p className="text-[9px] uppercase font-black text-white/30 tracking-[0.2em]">Feature Films</p>
                 </div>
-                <div className="glass-morphism p-4 sm:p-5 rounded-2xl">
-                  <p className="text-primary font-display text-3xl sm:text-4xl mb-1">04</p>
-                  <p className="text-[9px] uppercase font-black text-white/30 tracking-[0.25em]">Web Series</p>
+                <div className="glass-morphism p-4 rounded-2xl">
+                  <p className="text-primary font-display text-3xl mb-1">04</p>
+                  <p className="text-[9px] uppercase font-black text-white/30 tracking-[0.2em]">Web Series</p>
                 </div>
-                <div className="glass-morphism p-4 sm:p-5 rounded-2xl">
-                  <p className="text-primary font-display text-3xl sm:text-4xl mb-1 italic">Kannada</p>
-                  <p className="text-[9px] uppercase font-black text-white/30 tracking-[0.25em]">Primary Language</p>
+                <div className="glass-morphism p-4 rounded-2xl">
+                  <p className="text-primary font-display text-xl mb-1 italic">KN</p>
+                  <p className="text-[9px] uppercase font-black text-white/30 tracking-[0.2em]">Language</p>
                 </div>
               </div>
-            </div>
-            <div className="flex flex-wrap gap-4">
-              {['Action', 'Stunts', 'Martial Arts', 'Dialogue Delivery', 'Method Acting'].map(skill => (
-                <span key={skill} className="px-6 py-3 bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] text-white/40 hover:text-primary hover:border-primary/50 transition-all cursor-default">
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-        </div>
+            </motion.div>
+
+          </div>
         </div>
       </section>
 
