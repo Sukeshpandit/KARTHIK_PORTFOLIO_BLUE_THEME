@@ -1,6 +1,6 @@
 import { motion, AnimatePresence, useTransform, useMotionValue, useSpring } from 'motion/react';
 import type { MotionValue } from 'motion/react';
-import { Play, Star } from 'lucide-react';
+import { Play, Star, Brain, Dumbbell, Film, ArrowRight } from 'lucide-react';
 import { SectionHeading, Page } from './Shared';
 import { useState, useRef, useEffect } from 'react';
 
@@ -380,18 +380,128 @@ export const Acting = ({ setPage }: { setPage: (p: Page) => void }) => {
         </section>
       </div>
 
+      {/* ── Biography Section ── */}
+      <section className="relative w-full min-h-[90vh] flex items-center overflow-hidden">
+        {/* Background */}
+        <div className="absolute inset-0 z-0">
+          <img
+            className="w-full h-full object-cover opacity-30"
+            style={{ objectPosition: 'center 15%', transform: 'scale(0.7)', transformOrigin: 'center 15%' }}
+            src={`${import.meta.env.BASE_URL}assets/images/Anger.jpg`}
+            alt=""
+            aria-hidden
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/40 to-dark/60" />
+          <div className="absolute inset-0 bg-gradient-to-r from-dark via-transparent to-transparent hidden md:block" />
+        </div>
+
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-12 items-center pt-24 pb-16">
+
+          {/* Left: bio content */}
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="flex flex-col items-start"
+          >
+            {/* <div className="bg-white/5 backdrop-blur-sm px-4 py-2 rounded-full mb-6 inline-flex items-center gap-2 border border-white/10">
+              <span className="text-xs font-inter uppercase tracking-[0.2em] text-primary">The Narrative</span>
+            </div> */}
+
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl tracking-tight leading-[0.85] mb-8 text-white uppercase">
+              <span className="text-primary italic">Acting</span> Biography
+            </h2>
+
+            <div className="space-y-5 max-w-xl">
+              <p className="text-xl md:text-2xl text-white font-light leading-relaxed">
+                A presence that commands the frame and a depth that lingers long after the credits roll.
+              </p>
+              <p className="text-white/60 text-base md:text-lg leading-relaxed">
+                With over eight years of experience across independent cinema and mainstream productions, Karthik has carved a niche as a transformative performer. His unique value lies in the intersection of raw, visceral intensity and quiet, calculated vulnerability.
+              </p>
+              <p className="text-white/60 text-base md:text-lg leading-relaxed">
+                Whether portraying a weathered antagonist or a complex action lead, Karthik brings an authenticity that anchors every scene — making him a preferred collaborator for directors seeking truth in every frame.
+              </p>
+            </div>
+
+            <div className="mt-10 flex flex-wrap gap-4">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-8 py-4 rounded-md font-inter font-bold uppercase tracking-wider text-dark"
+                style={{
+                  background: 'linear-gradient(135deg, #C9A84C 0%, rgba(201,168,76,0.75) 100%)',
+                  boxShadow: '0 8px 32px rgba(201,168,76,0.35)',
+                }}
+              >
+                Full CV / Credits
+              </motion.button>
+              <motion.button
+                whileHover={{ backgroundColor: 'rgba(255,255,255,0.10)' }}
+                whileTap={{ scale: 0.95 }}
+                className="px-8 py-4 rounded-md border border-white/20 font-inter font-bold uppercase tracking-wider text-white bg-white/5 backdrop-blur-sm transition-all"
+              >
+                Download Headshots
+              </motion.button>
+            </div>
+          </motion.div>
+
+          {/* Right: portrait */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="hidden md:flex justify-end"
+          >
+            <div className="relative w-full max-w-md aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
+              <img
+                alt="Karthik Shekar Acharya Portrait"
+                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                src={`${import.meta.env.BASE_URL}assets/images/Anger.jpg`}
+              />
+              <div className="absolute inset-0 mix-blend-overlay" style={{ background: 'rgba(201,168,76,0.08)' }} />
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Quote Section ── */}
+      <section className="relative py-32 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img
+            alt=""
+            aria-hidden
+            className="w-full h-full object-cover opacity-20"
+            src="https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=2070&auto=format&fit=crop"
+          />
+          <div className="absolute inset-0 backdrop-blur-sm" style={{ background: 'rgba(2,21,35,0.80)' }} />
+        </div>
+        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="font-display text-8xl text-primary opacity-40 leading-none mb-4">"</div>
+            <blockquote className="font-display text-4xl md:text-5xl lg:text-6xl text-white leading-tight uppercase italic mb-10">
+              Acting is not about becoming someone else, but about finding the resonance of that character within yourself and letting it breathe on screen.
+            </blockquote>
+            <cite className="font-inter text-primary uppercase tracking-[0.4em] not-italic text-sm">
+              — Karthik Shekar Acharya
+            </cite>
+          </div>
+        </div>
+      </section>
+
       {/* ── Showreel — stacked card scroll ── */}
-      <section className="relative z-10" style={{ background: 'linear-gradient(to bottom, transparent 0%, #0a1d2c 6%)' }}>
-        <div className="pt-48 pb-4 max-w-7xl mx-auto px-6">
+      {/* <section className="relative z-10" style={{ background: 'linear-gradient(to bottom, transparent 0%, #0a1d2c 6%)' }}>
+        <div className="pt-32 pb-4 max-w-7xl mx-auto px-6">
           <SectionHeading title="Action Showreel" subtitle="Performance Highlights" />
         </div>
         <ShowreelStack />
-      </section>
+      </section> */}
 
       {/* ── Filmography ── */}
       <section className="py-32 px-6">
         <div className="max-w-7xl mx-auto">
-          {/* Header row */}
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
             <SectionHeading title="Filmography" subtitle="Complete Projects" align="left" />
 
@@ -414,7 +524,6 @@ export const Acting = ({ setPage }: { setPage: (p: Page) => void }) => {
             </div>
           </div>
 
-          {/* Cards grid */}
           <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             <AnimatePresence mode="popLayout">
               {filteredProjects.map((p, i) => (
@@ -435,16 +544,9 @@ export const Acting = ({ setPage }: { setPage: (p: Page) => void }) => {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     referrerPolicy="no-referrer"
                   />
-
-                  {/* Gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/30 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-500" />
-
-                  {/* Gold top-left corner on hover */}
                   <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-primary opacity-0 group-hover:opacity-100 transition-all duration-400 group-hover:w-10 group-hover:h-10" />
-
-                  {/* Glowing bottom bar on hover */}
                   <div className="absolute bottom-0 inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 group-hover:opacity-80 transition-opacity duration-500" />
-
                   <div className="absolute bottom-0 left-0 w-full p-8">
                     <div className="flex justify-between items-center mb-4">
                       <span className="text-primary font-bold text-[10px] uppercase tracking-widest">{p.year}</span>
@@ -461,6 +563,46 @@ export const Acting = ({ setPage }: { setPage: (p: Page) => void }) => {
           </motion.div>
         </div>
       </section>
+
+      {/* ── Collaborate CTA ── */}
+      <section className="max-w-7xl mx-auto px-6 md:px-12 py-16">
+        <div
+          className="p-12 md:p-20 rounded-3xl border border-white/5 relative overflow-hidden"
+          style={{ backgroundColor: '#0a1d2c' }}
+        >
+          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 rounded-full pointer-events-none"
+            style={{ background: 'rgba(201,168,76,0.10)', filter: 'blur(100px)' }} />
+          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full pointer-events-none"
+            style={{ background: 'rgba(201,168,76,0.05)', filter: 'blur(100px)' }} />
+
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-12">
+            <div className="max-w-2xl">
+              <h2 className="font-display text-5xl md:text-7xl text-white uppercase mb-6 leading-tight">
+                Collaborate<br />with Karthik
+              </h2>
+              <p className="text-white/60 text-lg leading-relaxed">
+                For inquiries regarding new projects, theatrical representation, or commercial bookings, reach out directly.
+              </p>
+            </div>
+            <div className="shrink-0">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setPage('contact')}
+                className="inline-flex items-center gap-4 px-10 py-6 rounded-md font-inter font-bold uppercase tracking-widest text-dark text-lg"
+                style={{
+                  background: 'linear-gradient(135deg, #C9A84C 0%, rgba(201,168,76,0.80) 100%)',
+                  boxShadow: '0 20px 60px rgba(201,168,76,0.3)',
+                }}
+              >
+                <span>Contact Talent Agency</span>
+                <ArrowRight size={20} />
+              </motion.button>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 };
