@@ -1,4 +1,4 @@
-import { motion, AnimatePresence, useTransform, useMotionValue, useSpring } from 'motion/react';
+import { motion, useTransform, useMotionValue, useSpring } from 'motion/react';
 import type { MotionValue } from 'motion/react';
 import { Play, Star, Brain, Dumbbell, Film, ArrowRight } from 'lucide-react';
 import { SectionHeading, Page } from './Shared';
@@ -264,20 +264,281 @@ const ShowreelStack = () => {
   );
 };
 
-/* ─────────────── Main Component ─────────────── */
-export const Acting = ({ setPage }: { setPage: (p: Page) => void }) => {
-  const [filter, setFilter] = useState('All');
+/* ── Acting Bits — horizontal auto-scroll carousel ── */
+const ClipCard = ({
+  clip,
+  onHoverChange,
+}: {
+  clip: { title: string; label: string; videoSrc: string; thumbnail: string };
+  onHoverChange: (h: boolean) => void;
+}) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [hovered, setHovered] = useState(false);
 
-  const projects = [
-    { title: 'The Silent Warrior', role: 'Vikram (Lead Antagonist)', year: '2024', genre: 'Action', platform: 'Theater', img: 'https://picsum.photos/seed/movie-1/600/800' },
-    { title: 'Shadow Protocol',    role: 'Agent X',                  year: '2023', genre: 'Thriller', platform: 'Netflix',   img: 'https://picsum.photos/seed/movie-2/600/800' },
-    { title: 'City of Gold',       role: 'Inspector Rathore',        year: '2023', genre: 'Crime',   platform: 'Prime Video',img: 'https://picsum.photos/seed/movie-3/600/800' },
-    { title: 'The Last Stand',     role: 'Commander',                year: '2022', genre: 'Action', platform: 'Theater',    img: 'https://picsum.photos/seed/movie-4/600/800' },
-    { title: 'Midnight Chase',     role: 'The Driver',               year: '2021', genre: 'Action', platform: 'Hotstar',    img: 'https://picsum.photos/seed/movie-5/600/800' },
-    { title: 'Broken Ties',        role: 'Sameer',                   year: '2021', genre: 'Drama',  platform: 'Theater',    img: 'https://picsum.photos/seed/movie-6/600/800' },
+  const enter = () => {
+    setHovered(true);
+    onHoverChange(true);
+    if (videoRef.current && clip.videoSrc) {
+      videoRef.current.play().catch(() => {});
+    }
+  };
+
+  const leave = () => {
+    setHovered(false);
+    onHoverChange(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  };
+
+  return (
+    <div
+      onMouseEnter={enter}
+      onMouseLeave={leave}
+      className="relative shrink-0 w-[32rem] aspect-video rounded-2xl overflow-hidden cursor-pointer"
+      style={{
+        boxShadow: hovered
+          ? '0 0 0 1px rgba(201,168,76,0.5), 0 20px 60px rgba(0,0,0,0.7)'
+          : '0 8px 32px rgba(0,0,0,0.4)',
+        transition: 'box-shadow 0.35s',
+      }}
+    >
+      {/* Thumbnail */}
+      <img
+        src={clip.thumbnail}
+        alt={clip.title}
+        className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 ${
+          hovered && clip.videoSrc ? 'opacity-0' : 'opacity-100'
+        } ${hovered ? 'scale-105' : 'scale-100'}`}
+      />
+
+      {/* Video — only rendered when a source is provided */}
+      {clip.videoSrc && (
+        <video
+          ref={videoRef}
+          src={clip.videoSrc}
+          muted
+          loop
+          playsInline
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+            hovered ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      )}
+
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/20 to-transparent" />
+
+      {/* Label badge */}
+      <div className="absolute top-3 left-3">
+        <span className="text-[9px] font-inter font-bold uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-primary/15 border border-primary/25 text-primary backdrop-blur-sm">
+          {clip.label}
+        </span>
+      </div>
+
+      {/* Idle play icon */}
+      {!hovered && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm flex items-center justify-center">
+            <Play size={14} fill="currentColor" className="text-white ml-0.5" />
+          </div>
+        </div>
+      )}
+
+      {/* Bottom title */}
+      <div className="absolute bottom-0 left-0 right-0 p-4">
+        <p className={`font-display text-lg tracking-tight transition-colors duration-300 ${hovered ? 'text-primary' : 'text-white'}`}>
+          {clip.title}
+        </p>
+      </div>
+
+      {/* Gold border on hover */}
+      <div className={`absolute inset-0 rounded-2xl border pointer-events-none transition-all duration-300 ${hovered ? 'border-primary/40' : 'border-white/8'}`} />
+    </div>
+  );
+};
+
+const ActingBits = () => {
+  // ← paste videoSrc paths here when available
+  const clips = [
+    { title: 'The Silent Warrior', label: 'Action',   videoSrc: '', thumbnail: 'https://picsum.photos/seed/bit-1/800/450' },
+    { title: 'Shadow Protocol',    label: 'Thriller', videoSrc: '', thumbnail: 'https://picsum.photos/seed/bit-2/800/450' },
+    { title: 'City of Gold',       label: 'Crime',    videoSrc: '', thumbnail: 'https://picsum.photos/seed/bit-3/800/450' },
+    { title: 'The Last Stand',     label: 'Action',   videoSrc: '', thumbnail: 'https://picsum.photos/seed/bit-4/800/450' },
+    { title: 'Midnight Chase',     label: 'Thriller', videoSrc: '', thumbnail: 'https://picsum.photos/seed/bit-5/800/450' },
+    { title: 'Broken Ties',        label: 'Drama',    videoSrc: '', thumbnail: 'https://picsum.photos/seed/bit-6/800/450' },
   ];
 
-  const filteredProjects = filter === 'All' ? projects : projects.filter(p => p.genre === filter || p.platform === filter);
+  const trackRef  = useRef<HTMLDivElement>(null);
+  const rafRef    = useRef<number>(0);
+  const posRef    = useRef(0);
+  const pausedRef = useRef(false);
+  const SPEED     = 0.55; // px per frame
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const tick = () => {
+      if (!pausedRef.current) {
+        posRef.current += SPEED;
+        const half = track.scrollWidth / 2;
+        if (posRef.current >= half) posRef.current = 0;
+        track.style.transform = `translateX(-${posRef.current}px)`;
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
+
+  return (
+    <section className="pt-8 pb-4 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 mb-3">
+        <h2 className="font-display text-6xl md:text-8xl text-white uppercase tracking-wider">Acting Bits</h2>
+      </div>
+
+      <div className="relative overflow-hidden">
+        {/* Edge fades */}
+        <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+          style={{ background: 'linear-gradient(to right, #021523 0%, transparent 100%)' }} />
+        <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+          style={{ background: 'linear-gradient(to left, #021523 0%, transparent 100%)' }} />
+
+        {/* Scrolling track — duplicated for seamless loop */}
+        <div ref={trackRef} className="flex gap-5 w-max pl-6">
+          {[...clips, ...clips].map((clip, i) => (
+            <ClipCard
+              key={i}
+              clip={clip}
+              onHoverChange={(h) => { pausedRef.current = h; }}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ── Press & Reviews ── */
+const pressReviews = [
+  { publication: 'Variety',           abbr: 'Va', tag: 'Film Review', reviewer: 'Ananya Krishnan',      date: 'Mar 2024', rating: 5, snippet: 'Karthik delivers a commanding performance that anchors the film — a raw, magnetic presence that holds the screen with effortless authority.' },
+  { publication: 'Film Companion',    abbr: 'FC', tag: 'Feature',     reviewer: 'Rahul Desai',           date: 'Jan 2024', rating: 5, snippet: 'Every scene he inhabits crackles with tension. His instincts are impeccable — he knows exactly when to hold back and when to unleash.' },
+  { publication: 'The Hindu',         abbr: 'TH', tag: 'Review',      reviewer: 'Sudhir Krishnaswamy',  date: 'Nov 2023', rating: 4, snippet: 'A breakthrough performance. Shekar brings a rare emotional intelligence to his role, balancing menace and vulnerability in equal measure.' },
+  { publication: 'Filmfare',          abbr: 'Ff', tag: 'Cover Story', reviewer: 'Priya Nair',            date: 'Sep 2023', rating: 5, snippet: 'There is something deeply compelling about the way Karthik occupies the frame — a cinematic gravity that few actors possess.' },
+  { publication: 'NDTV',              abbr: 'ND', tag: 'Review',      reviewer: 'Saibal Chatterjee',     date: 'Jun 2023', rating: 4, snippet: 'A performance of remarkable subtlety. He communicates entire worlds through a glance, a pause — the hallmark of a truly gifted actor.' },
+  { publication: 'Deccan Herald',     abbr: 'DH', tag: 'Feature',     reviewer: 'Kavitha Rao',           date: 'Apr 2023', rating: 5, snippet: 'Karthik Shekar Acharya is the real discovery of this film — every moment he is on screen, you simply cannot look away.' },
+];
+
+const PressReviews = () => {
+  const trackRef  = useRef<HTMLDivElement>(null);
+  const rafRef    = useRef<number>(0);
+  const posRef    = useRef(0);
+  const pausedRef = useRef(false);
+  const SPEED     = 0.4;
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    posRef.current = 0;
+    const tick = () => {
+      if (!pausedRef.current) {
+        posRef.current += SPEED;
+        const half = track.scrollWidth / 2;
+        if (posRef.current >= half) posRef.current = 0;
+        track.style.transform = `translateX(${posRef.current - half}px)`;
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
+
+  return (
+    <section
+      className="py-12 overflow-hidden"
+      onMouseEnter={() => { pausedRef.current = true; }}
+      onMouseLeave={() => { pausedRef.current = false; }}
+    >
+      <div className="max-w-7xl mx-auto px-6 mb-6">
+        <h2 className="font-display text-6xl md:text-8xl text-white uppercase tracking-wider">
+          Press <span className="text-primary italic">&</span> Reviews
+        </h2>
+      </div>
+
+      <div className="relative overflow-hidden">
+        {/* Edge fades */}
+        <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+          style={{ background: 'linear-gradient(to right, #021523 0%, transparent 100%)' }} />
+        <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+          style={{ background: 'linear-gradient(to left, #021523 0%, transparent 100%)' }} />
+
+        <div ref={trackRef} className="flex gap-5 w-max pl-6 pb-4">
+          {[...pressReviews, ...pressReviews].map((r, i) => (
+            <div
+              key={i}
+              className="shrink-0 w-64 md:w-80 p-4 md:p-7 rounded-2xl border border-white/8 flex flex-col gap-2 md:gap-4 relative overflow-hidden group hover:border-primary/30 transition-all duration-500"
+              style={{
+                background: 'rgba(255,255,255,0.035)',
+                backdropFilter: 'blur(16px)',
+                boxShadow: '0 8px 40px rgba(0,0,0,0.4)',
+              }}
+            >
+              {/* Ambient glow */}
+              <div className="absolute -top-10 -right-10 w-36 h-36 rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+                style={{ background: 'rgba(201,168,76,0.08)', filter: 'blur(30px)' }} />
+
+              {/* Publication row */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div
+                    className="w-9 h-9 rounded-lg flex items-center justify-center font-display font-bold text-xs text-dark shrink-0"
+                    style={{ background: 'linear-gradient(135deg, #C9A84C, rgba(201,168,76,0.70))' }}
+                  >
+                    {r.abbr}
+                  </div>
+                  <span className="font-display text-base text-white uppercase tracking-wider leading-none">{r.publication}</span>
+                </div>
+                <span className="text-[8px] font-inter uppercase tracking-[0.2em] text-primary/70 border border-primary/20 px-2 py-0.5 rounded-full shrink-0">
+                  {r.tag}
+                </span>
+              </div>
+
+              {/* Star rating */}
+              <div className="flex gap-0.5">
+                {Array.from({ length: 5 }).map((_, si) => (
+                  <Star key={si} size={10} className={si < r.rating ? 'text-primary fill-primary' : 'text-white/15'} />
+                ))}
+              </div>
+
+              {/* Decorative quote mark */}
+              <div className="hidden md:block font-display text-6xl text-primary/15 leading-none -mb-5 select-none">"</div>
+
+              {/* Snippet */}
+              <p className="text-white/70 text-xs md:text-sm font-inter leading-relaxed italic flex-1">
+                {r.snippet}
+              </p>
+
+              {/* Divider */}
+              <div className="h-px bg-gradient-to-r from-primary/30 via-white/8 to-transparent" />
+
+              {/* Reviewer + date */}
+              <div className="flex items-center justify-between">
+                <span className="text-white/45 text-xs font-inter">— {r.reviewer}</span>
+                <span className="text-white/25 text-[10px] font-mono tabular-nums">{r.date}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ─────────────── Main Component ─────────────── */
+export const Acting = ({ setPage }: { setPage: (p: Page) => void }) => {
 
   return (
     <div className="pb-20">
@@ -467,100 +728,65 @@ export const Acting = ({ setPage }: { setPage: (p: Page) => void }) => {
         </div>
       </section>
 
-      {/* ── Quote Section ── */}
-      <section className="relative py-32 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img
-            alt=""
-            aria-hidden
-            className="w-full h-full object-cover opacity-20"
-            src="https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=2070&auto=format&fit=crop"
-          />
-          <div className="absolute inset-0 backdrop-blur-sm" style={{ background: 'rgba(2,21,35,0.80)' }} />
-        </div>
-        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="font-display text-8xl text-primary opacity-40 leading-none mb-4">"</div>
-            <blockquote className="font-display text-4xl md:text-5xl lg:text-6xl text-white leading-tight uppercase italic mb-10">
-              Acting is not about becoming someone else, but about finding the resonance of that character within yourself and letting it breathe on screen.
-            </blockquote>
-            <cite className="font-inter text-primary uppercase tracking-[0.4em] not-italic text-sm">
-              — Karthik Shekar Acharya
-            </cite>
-          </div>
-        </div>
-      </section>
+      {/* ── Acting Bits carousel ── */}
+      <ActingBits />
 
-      {/* ── Showreel — stacked card scroll ── */}
-      {/* <section className="relative z-10" style={{ background: 'linear-gradient(to bottom, transparent 0%, #0a1d2c 6%)' }}>
-        <div className="pt-32 pb-4 max-w-7xl mx-auto px-6">
-          <SectionHeading title="Action Showreel" subtitle="Performance Highlights" />
-        </div>
-        <ShowreelStack />
-      </section> */}
+      {/* ── Press & Reviews ── */}
+      <PressReviews />
 
-      {/* ── Filmography ── */}
-      <section className="py-32 px-6">
+      {/* ── Photo Gallery ── */}
+      <section className="py-20 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-            <SectionHeading title="Filmography" subtitle="Complete Projects" align="left" />
-
-            <div className="flex flex-wrap gap-2 mb-16">
-              {['All', 'Action', 'Thriller', 'Netflix', 'Theater'].map(f => (
-                <motion.button
-                  key={f}
-                  onClick={() => setFilter(f)}
-                  whileTap={{ scale: 0.94 }}
-                  className={`px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${
-                    filter === f
-                      ? 'bg-primary text-dark shadow-lg'
-                      : 'bg-white/5 text-white/60 hover:bg-white/10'
-                  }`}
-                  style={filter === f ? { boxShadow: '0 0 20px rgba(201,168,76,0.4)' } : {}}
-                >
-                  {f}
-                </motion.button>
-              ))}
-            </div>
+          <div className="mb-12">
+            <h2 className="font-display text-6xl md:text-8xl text-white uppercase tracking-wider">
+              The <span className="text-primary italic">Gallery</span>
+            </h2>
+            <p className="text-white/40 text-sm font-inter uppercase tracking-[0.3em] mt-3">
+              Audition Frames &amp; On-Set Captures
+            </p>
           </div>
 
-          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <AnimatePresence mode="popLayout">
-              {filteredProjects.map((p, i) => (
-                <motion.div
-                  key={p.title}
-                  layout
-                  initial={{ opacity: 0, scale: 0.88, y: 30 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.88, y: -20 }}
-                  transition={{ duration: 0.45, delay: i * 0.07 }}
-                  whileHover={{ y: -8 }}
-                  className="group relative aspect-[6/5] rounded-2xl overflow-hidden border border-white/10 cursor-pointer"
-                  style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.5)' }}
-                >
-                  <img
-                    src={p.img}
-                    alt={p.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/30 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-500" />
-                  <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-primary opacity-0 group-hover:opacity-100 transition-all duration-400 group-hover:w-10 group-hover:h-10" />
-                  <div className="absolute bottom-0 inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 group-hover:opacity-80 transition-opacity duration-500" />
-                  <div className="absolute bottom-0 left-0 w-full p-8">
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-primary font-bold text-[10px] uppercase tracking-widest">{p.year}</span>
-                      <span className="px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-[8px] font-bold uppercase tracking-widest border border-white/10">
-                        {p.platform}
-                      </span>
-                    </div>
-                    <h4 className="text-2xl mb-1 group-hover:text-primary transition-colors duration-300">{p.title}</h4>
-                    <p className="text-white/50 text-xs font-inter">{p.role}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </motion.div>
+          {/* Masonry-style grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[180px] md:auto-rows-[200px] gap-3">
+            {/* Row 1: large left + 2 stacked right */}
+            {[
+              { src: 'Anger.jpg',              span: 'col-span-1 md:col-span-2 row-span-2' },
+              { src: 'heroImage2.png',         span: 'col-span-1 row-span-1' },
+              { src: 'heroImage3.png',         span: 'col-span-1 row-span-1' },
+              { src: 'Homehero1.JPG',          span: 'col-span-1 md:col-span-2 row-span-1' },
+              { src: 'Prabas.jpg',             span: 'col-span-1 row-span-2' },
+              { src: 'shared image (1).jpg',   span: 'col-span-1 md:col-span-2 row-span-2' },
+              { src: 'shared image (3).jpg',   span: 'col-span-1 row-span-1' },
+              { src: 'shared image (4).jpg',   span: 'col-span-1 row-span-1' },
+              { src: 'shared image (5).jpg',   span: 'col-span-1 row-span-1' },
+              { src: 'shared image (6).jpg',   span: 'col-span-1 md:col-span-2 row-span-1' },
+              { src: 'Tiger_prabrakar.jpg',    span: 'col-span-1 row-span-1' },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.5, delay: i * 0.04 }}
+                className={`${item.span} group relative rounded-xl overflow-hidden cursor-pointer`}
+                style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}assets/images/${item.src}`}
+                  alt=""
+                  className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
+                />
+                {/* Dark overlay — lifts on hover */}
+                <div className="absolute inset-0 bg-dark/40 group-hover:bg-dark/10 transition-colors duration-500" />
+                {/* Gold border flash on hover */}
+                <div className="absolute inset-0 rounded-xl border border-transparent group-hover:border-primary/40 transition-colors duration-400 pointer-events-none" />
+                {/* Corner accent */}
+                <div className="absolute top-3 left-3 w-5 h-5 border-t-2 border-l-2 border-primary/0 group-hover:border-primary/70 transition-all duration-400 group-hover:w-8 group-hover:h-8" />
+                {/* Gold scan line */}
+                <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 

@@ -444,10 +444,14 @@ export const SectionHeading = ({ title, subtitle, align = 'center' }: { title: s
       className="flex items-center gap-4 mb-8 justify-center md:justify-start"
       style={{ justifyContent: align === 'center' ? 'center' : 'flex-start' }}
     >
-      <div className="h-[2px] w-16 bg-primary" />
-      <p className="text-primary font-black tracking-[0.5em] uppercase text-[11px]">
-        {subtitle}
-      </p>
+      {subtitle && (
+        <>
+          <div className="h-[2px] w-16 bg-primary" />
+          <p className="text-primary font-black tracking-[0.5em] uppercase text-[11px]">
+            {subtitle}
+          </p>
+        </>
+      )}
     </motion.div>
     <motion.h2 
       initial={{ opacity: 0, y: 40, scale: 0.95 }}
